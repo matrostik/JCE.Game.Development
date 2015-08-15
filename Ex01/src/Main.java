@@ -6,7 +6,7 @@ public class Main {
     {
         JFrame frame = new JFrame("Exersice 1");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(500, 510);
        // GraphicsPanel p = new GraphicsPanel();
        // Graphics2DPanel p = new Graphics2DPanel();
        // ClipPanel p = new ClipPanel();
