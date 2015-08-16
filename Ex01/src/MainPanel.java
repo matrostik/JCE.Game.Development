@@ -14,18 +14,14 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
-import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import model.MyComboBoxModel;
 import model.MyJspinner;
 import model.Planet;
 
 /**
- * 
- * @author Ros Haitovich
- *
+ * Custom panel
  */
 public class MainPanel extends JPanel {
 
@@ -54,7 +50,7 @@ public class MainPanel extends JPanel {
 		planets = new Planet[] {
 			new Planet("Earth",9.8,0.8,false),
 			new Planet("Moon",1.6,0.8,false),
-			new Planet("Mars",3.8,0.0,false),
+			new Planet("Mars",3.8,0.8,false),
 			new Planet("Select",5.0,0.8,true)
 		};
 		selectedPlanet = planets[0];
@@ -136,11 +132,9 @@ public class MainPanel extends JPanel {
 		Image img = Toolkit.getDefaultToolkit().getImage(selectedPlanet.getName().toLowerCase() + ".jpg");
 		g2d.drawImage(img, 0, 0, this);
 
-		int w = getWidth();
-		//int h = getHeight();
 		if(isRunning){
 			g.setColor(Color.GREEN);
-			g.fillOval(w/2-12, currentHeight, 25, 25);
+			g.fillOval(getWidth()/2-12, currentHeight, 25, 25);
 		}
 	}
 
@@ -155,7 +149,6 @@ public class MainPanel extends JPanel {
 		spinnerGravitiy.setValue(s.getGravity());
 		spinnerElasticity.setValue(s.getElasticity());
 		spinnerHeight.setValue(10);
-		//System.out.println(s.getIsEditable());
 		spinnerGravitiy.setEditable(s.getIsEditable());
 	}
 
@@ -165,9 +158,8 @@ public class MainPanel extends JPanel {
 	private void heightValueChanged(ChangeEvent e) {
 		JSpinner sp = (JSpinner)e.getSource();
 		int selected = (int)sp.getValue();
-		currentHeight = bottomY - selected*20;
+		currentHeight = bottomY - selected * 20;
 		startY = currentHeight;
-		System.out.println(currentHeight);
 	}
 
 	/*
@@ -175,11 +167,8 @@ public class MainPanel extends JPanel {
 	 */
 	private void resetButtonClicked(ActionEvent e) {
 		planetsList.setSelectedItem(selectedPlanet);
-		spinnerHeight.setValue(10);
 		timer.stop();
 		isRunning = false;
-		interval = 5;
-		timer.setDelay(interval);
 		currentHeight = 250;
 		isFalling = true;
 		repaint();
@@ -189,10 +178,10 @@ public class MainPanel extends JPanel {
 	 * Start the game
 	 */
 	private void startButtonClicked(ActionEvent e) {
-		///pnlMain.repaint();
-		selectedPlanet= (Planet) planetsList.getSelectedItem();
-		currentHeight = bottomY -(int)spinnerHeight.getValue() * 20;
-		interval = 5;
+		selectedPlanet = (Planet)planetsList.getSelectedItem();
+		currentHeight = bottomY - (int)spinnerHeight.getValue() * 20;
+		interval = (int)(200/selectedPlanet.getGravity());
+		//System.out.println("interval - "+ interval);
 		timer.setDelay(interval);
 		timer.start();
 		isRunning = true;
@@ -204,31 +193,35 @@ public class MainPanel extends JPanel {
 	 */
 	private class TimerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-
+			// got bottom
 			if(bottomY <= currentHeight){
-				//currentHeight = bottomY+1;
 				isFalling = false;
 				interval *= (2 - (double)spinnerElasticity.getValue());
 				startY *= (2-(double)spinnerElasticity.getValue());
-				System.out.println("startY -        " + startY);
-				System.out.println("currentHeight - " + currentHeight);
-				System.out.println("bottomY -	    " + bottomY);
-				System.out.println("interval -	    " + interval);
 				timer.setDelay(interval);
 			}
+			// got top
 			else if(startY >= currentHeight){
-				//currentHeight = startY;
 				isFalling = true;
 			}
+			// end of motion
 			if(startY >= bottomY)
 			{
-				startY = bottomY -(int)spinnerHeight.getValue() * 20;
+				startY = bottomY - (int)spinnerHeight.getValue() * 20;
 				timer.stop();
 			}
+			// change height
 			currentHeight = !isFalling ? currentHeight-5 : currentHeight+5;
-			//System.out.println("interval - " + interval);
-			//System.out.println("startY - " + startY);
-			//System.out.println("currentHeight - " + currentHeight);
+			// update speed
+			System.out.println("interval - "+ interval);
+			if(isFalling){
+				interval = interval == 5 ? interval : interval-1; 
+			}
+			else{
+				interval += 1;
+			}
+			timer.setDelay(interval);
+			
 			repaint();
 		}
 	}

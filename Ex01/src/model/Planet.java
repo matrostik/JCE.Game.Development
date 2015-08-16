@@ -4,8 +4,7 @@
 package model;
 
 /**
- * @author matro
- *
+ * Planet presentation class
  */
 public class Planet {
 

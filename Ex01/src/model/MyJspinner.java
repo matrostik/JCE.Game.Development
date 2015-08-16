@@ -18,7 +18,6 @@ public class MyJspinner extends JSpinner {
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) this.getEditor();
 		editor.getTextField().setEnabled(isEnabled);
 		editor.getTextField().setEditable(isEnabled);
-		System.out.println(isEnabled);
 	}
 	
 	public MyJspinner(SpinnerModel model) {
