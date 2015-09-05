@@ -6,51 +6,53 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+ * 
+ */
 public class GamePanel extends JPanel {
-	private static final Color BG_COLOR = new Color(0xbbada0);
-	private static final String FONT_NAME = "Arial";
-	private static final int TILE_SIZE = 64;
-	private static final int TILES_MARGIN = 16;
+	
+	private final Color BG_COLOR = new Color(0xbbada0);
+	private final String FONT_NAME = "Arial";
+	private final int TILE_SIZE = 64;
+	private final int TILES_MARGIN = 16;
 	private Tile[] myTiles;
 	boolean myWin = false;
 	boolean myLose = false;
 	int myScore = 0;
 
-	public GamePanel() 
-	{ 
-		setFocusable(true); 
-		addKeyListener(new KeyAdapter() 
-		{ 
-			@Override 
-			public void keyPressed(KeyEvent e) 
-			{ 
-				if(e.getKeyCode() == KeyEvent.VK_ESCAPE) 
-				{ 
-					resetGame(); 
-				} 
-				if(!canMove()) 
-				{ 
-					myLose = true; 
-				} 
-				if(!myWin && !myLose) 
-				{ 
-					switch (e.getKeyCode()) 
-					{ 
-					case KeyEvent.VK_LEFT: left(); 
-					break; 
-					case KeyEvent.VK_RIGHT: right(); 
-					break; 
-					case KeyEvent.VK_DOWN: down(); 
-					break; 
-					case KeyEvent.VK_UP: up(); 
-					break; } } 
-				if (!myWin && !canMove()) 
-				{ 
-					myLose = true; 
-				} 
+	public GamePanel() {
+		setFocusable(true);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					resetGame();
+				}
+				if (!canMove()) {
+					myLose = true;
+				}
+				if (!myWin && !myLose) {
+					switch (e.getKeyCode()) {
+					case KeyEvent.VK_LEFT:
+						left();
+						break;
+					case KeyEvent.VK_RIGHT:
+						right();
+						break;
+					case KeyEvent.VK_DOWN:
+						down();
+						break;
+					case KeyEvent.VK_UP:
+						up();
+						break;
+					}
+				}
+				if (!myWin && !canMove()) {
+					myLose = true;
+				}
 				repaint();
-			} 
-		}); 
+			}
+		});
 		resetGame();
 	}
 
@@ -144,7 +146,8 @@ public class GamePanel extends JPanel {
 	private boolean compare(Tile[] line1, Tile[] line2) {
 		if (line1 == line2) {
 			return true;
-		} else if (line1.length != line2.length) {
+		} 
+		else if (line1.length != line2.length) {
 			return false;
 		}
 		for (int i = 0; i < line1.length; i++) {
@@ -160,7 +163,8 @@ public class GamePanel extends JPanel {
 		int offsetX = 3, offsetY = 3;
 		if (angle == 90) {
 			offsetY = 0;
-		} else if (angle == 270) {
+		} 
+		else if (angle == 270) {
 			offsetX = 0;
 		}
 		double rad = Math.toRadians(angle);
@@ -184,7 +188,8 @@ public class GamePanel extends JPanel {
 		}
 		if (l.size() == 0) {
 			return oldLine;
-		} else {
+		} 
+		else {
 			Tile[] newLine = new Tile[4];
 			ensureSize(l, 4);
 			for (int i = 0; i < 4; i++) {
@@ -211,13 +216,14 @@ public class GamePanel extends JPanel {
 		}
 		if (list.size() == 0) {
 			return oldLine;
-		} else {
+		} 
+		else {
 			ensureSize(list, 4);
 			return list.toArray(new Tile[4]);
 		}
 	}
 
-	private static void ensureSize(java.util.List<Tile> l, int s) {
+	private static void ensureSize(List<Tile> l, int s) {
 		while (l.size() != s) {
 			l.add(new Tile());
 		}
@@ -288,56 +294,7 @@ public class GamePanel extends JPanel {
 		g.drawString("Score: " + myScore, 200, 365);
 	}
 
-	private static int offsetCoors(int arg) {
+	private int offsetCoors(int arg) {
 		return arg * (TILES_MARGIN + TILE_SIZE) + TILES_MARGIN;
 	}
-
-	static class Tile {
-		int value;
-
-		public Tile() {
-			this(0);
-		}
-
-		public Tile(int num) {
-			value = num;
-		}
-
-		public boolean isEmpty() {
-			return value == 0;
-		}
-
-		public Color getForeground() {
-			return value < 16 ? new Color(0x776e65) : new Color(0xf9f6f2);
-		}
-
-		public Color getBackground() {
-			switch (value) {
-			case 2:
-				return new Color(0xeee4da);
-			case 4:
-				return new Color(0xede0c8);
-			case 8:
-				return new Color(0xf2b179);
-			case 16:
-				return new Color(0xf59563);
-			case 32:
-				return new Color(0xf67c5f);
-			case 64:
-				return new Color(0xf65e3b);
-			case 128:
-				return new Color(0xedcf72);
-			case 256:
-				return new Color(0xedcc61);
-			case 512:
-				return new Color(0xedc850);
-			case 1024:
-				return new Color(0xedc53f);
-			case 2048:
-				return new Color(0xedc22e);
-			}
-			return new Color(0xcdc1b4);
-		}
-	}
-
 }

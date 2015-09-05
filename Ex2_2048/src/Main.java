@@ -1,9 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-/**
- * 
- */
 
 /**
  * @author Ros
@@ -18,7 +15,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		JFrame game = new JFrame(); 
-		game.setTitle("2048 Game"); 
+		game.setTitle("2048"); 
 		game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); 
 		game.setSize(350, 400); 
 		game.setResizable(false); 
