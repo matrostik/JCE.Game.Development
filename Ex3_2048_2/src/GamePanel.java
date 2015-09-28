@@ -88,16 +88,16 @@ public class GamePanel extends KeyAdapter {
 	 */
 	private void createNumber()
 	{
-		Random ran = new Random();
-		int x = ran.nextInt(4);
-		int y = ran.nextInt(4);
+		Random random = new Random();
+		int x = random.nextInt(4);
+		int y = random.nextInt(4);
 		while (!tiles[x][y].getText().equals(""))
 		{
-			x = ran.nextInt(4);
-			y = ran.nextInt(4);
+			x = random.nextInt(4);
+			y = random.nextInt(4);
 		}
 		JTextField newButton = tiles[x][y];
-		int randomNumber = ran.nextInt(8);
+		int randomNumber = random.nextInt(8);
 		if (randomNumber < 7)
 			updateTile(newButton, 2);
 		else
